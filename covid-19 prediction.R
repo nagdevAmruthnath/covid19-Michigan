@@ -1,14 +1,22 @@
 # read data from a csv file
 data = read.csv("covid19.csv", header = T)
 
+# view data
+head(data)
+
 # create samples from the data
 samples = sample(1:16, size = 16*0.8)
+
+## Predict model based on cases and days
 
 # build an exponential regression model
 model = lm(log(Cases) ~ Day + I(Day^2) , data = data[samples,])
 
 # look at the summary of the model
 summary(model)
+
+# save model
+saveRDS(model, file = "Day_TotalCases.RDS")
 
 # predict for new data
 prediction = exp(predict(model, data.frame(Day = 1:21)))
